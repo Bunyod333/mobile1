@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин Сотовых Телефонов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .product {
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 250px;
+        }
+        .product img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        #cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #filters {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать в наш магазин!</h1>
+    </header>
+    <div id="filters">
+        <label for="priceFilter">Фильтр по цене:</label>
+        <select id="priceFilter">
+            <option value="all">Все</option>
+            <option value="low">До 20 000 руб.</option>
+            <option value="high">Свыше 20 000 руб.</option>
+        </select>
+        <label for="brandFilter">Фильтр по бренду:</label>
+        <select id="brandFilter">
+            <option value="all">Все</option>
+            <option value="apple">Apple</option>
+            <option value="samsung">Samsung</option>
+            <option value="xiaomi">Xiaomi</option>
+        </select>
+        <label for="memoryFilter">Фильтр по памяти:</label>
+        <select id="memoryFilter">
+            <option value="all">Все</option>
+            <option value="64">64 ГБ</option>
+            <option value="128">128 ГБ</option>
+            <option value="256">256 ГБ</option>
+        </select>
+        <label for="colorFilter">Фильтр по цвету:</label>
+        <select id="colorFilter">
+            <option value="all">Все</option>
+            <option value="black">Чёрный</option>
+            <option value="white">Белый</option>
+            <option value="blue">Синий</option>
+        </select>
+    </div>
+    <div id="cart">
+        <h2>Корзина</h2>
+        <ul id="cartItems"></ul>
+    </div>
+    <div class="container">
+        <div class="product" data-price="15000" data-brand="apple" data-memory="64" data-color="black">
+            <img src="https://via.placeholder.com/200" alt="Смартфон 1">
+            <h2>Смартфон A (Apple)</h2>
+            <p>Цена: 15 000 руб.</p>
+            <button onclick="addToCart('Смартфон A', 15000)">Купить</button>
+        </div>
+        <div class="product" data-price="20000" data-brand="samsung" data-memory="128" data-color="white">
+            <img src="https://via.placeholder.com/200" alt="Смартфон 2">
+            <h2>Смартфон B (Samsung)</h2>
+            <p>Цена: 20 000 руб.</p>
+            <button onclick="addToCart('Смартфон B', 20000)">Купить</button>
+        </div>
+        <div class="product" data-price="25000" data-brand="xiaomi" data-memory="256" data-color="blue">
+            <img src="https://via.placeholder.com/200" alt="Смартфон 3">
+            <h2>Смартфон C (Xiaomi)</h2>
+            <p>Цена: 25 000 руб.</p>
+            <button onclick="addToCart('Смартфон C', 25000)">Купить</button>
+        </div>
+    </div>
+    <script>
+        function applyFilters() {
+            let priceValue = document.getElementById('priceFilter').value;
+            let brandValue = document.getElementById('brandFilter').value;
+            let memoryValue = document.getElementById('memoryFilter').value;
+            let colorValue = document.getElementById('colorFilter').value;
+            let products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                let price = parseInt(product.getAttribute('data-price'));
+                let brand = product.getAttribute('data-brand');
+                let memory = product.getAttribute('data-memory');
+                let color = product.getAttribute('data-color');
+                let priceMatch = (priceValue === 'all' || (priceValue === 'low' && price <= 20000) || (priceValue === 'high' && price > 20000));
+                let brandMatch = (brandValue === 'all' || brand === brandValue);
+                let memoryMatch = (memoryValue === 'all' || memory === memoryValue);
+                let colorMatch = (colorValue === 'all' || color === colorValue);
+                product.style.display = (priceMatch && brandMatch && memoryMatch && colorMatch) ? 'block' : 'none';
+            });
+        }
+        document.querySelectorAll('#filters select').forEach(select => select.addEventListener('change', applyFilters));
+    </script>
+</body>
+</html>
